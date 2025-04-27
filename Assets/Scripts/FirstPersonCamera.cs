@@ -2,29 +2,34 @@ using UnityEngine;
 
 public class FirstPersonCamera : MonoBehaviour
 {
-    public float mouseSensitivity = 2f;
-    public Transform playerBody;
-    private float verticalRotation = 0f;
 
+    public Transform player;
+    public float mouseSensitivity = 2f;
+    float cameraVerticalRotation = 0f;
+
+
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // Lock and hide the cursor
-        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
     }
 
+    // Update is called once per frame
     void Update()
     {
-        // Get mouse input
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        // Rotate the camera up/down
-        verticalRotation -= mouseY;
-        verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f);
-        transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
+        float inputX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float inputY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        // Rotate the player body left/right
-        playerBody.Rotate(Vector3.up * mouseX);
+        cameraVerticalRotation -= inputY;
+        cameraVerticalRotation = Mathf.Clamp(cameraVerticalRotation, -90f, 90f);
+        transform.localEulerAngles = Vector3.right * cameraVerticalRotation;
+
+        player.Rotate(Vector3.up * inputX);
+
+
     }
-} 
+}
